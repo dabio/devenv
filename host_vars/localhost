@@ -14,6 +14,7 @@ packages:
   - fish
   - firefox
   - tmux
+  - yum-utils
   raw:
   - url: "https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch"
     dest: /usr/local/bin/neofetch
