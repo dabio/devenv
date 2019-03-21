@@ -1,0 +1,35 @@
+---
+
+packages:
+  groups:
+  - "Minimal Install"
+  - "Base"
+  - "Core"
+  - "Fonts"
+  - "GNOME"
+  - "X Window System"
+  - "General Purpose Desktop"
+  packages:
+  - pass
+  - fish
+  - firefox
+  - tmux
+  raw:
+  - url: "https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch"
+    dest: /usr/local/bin/neofetch
+  - url: "https://github.com/vim-volt/volt/releases/download/v0.3.5a/volt-v0.3.5a-linux-amd64"
+    dest: /usr/local/bin/volt
+  - url: "https://github.com/direnv/direnv/releases/download/v2.19.2/direnv.linux-amd64"
+    dest: /usr/local/bin/direnv
+
+vim:
+  packages:
+  - github.com/arcticicestudio/nord-vim
+  - github.com/cohama/lexima.vim
+  - github.com/ctrlpvim/ctrlp.vim
+  - github.com/itchyny/lightline.vim
+  - github.com/mhinz/vim-signify
+  - github.com/sbdchd/neoformat
+  - github.com/sheerun/vim-polyglot
+  - github.com/tpope/vim-vinegar
+  - github.com/w0rp/ale

@@ -1,0 +1,32 @@
+---
+
+- name: create the gdm profile
+  copy:
+    content: |
+      user-db:user
+      system-db:gdm
+      file-db:/usr/share/gdm/greeter-dconf-defaults
+    dest: /etc/dconf/profile/gdm
+
+- name: make sure the gdm directory exists
+  file:
+    path: /etc/dconf/db/gdm.d
+    state: directory
+
+- name: create gdm keyfile for machine-wide settings
+  copy:
+    content: |
+      [org/gnome/login-screen]
+      # Do not show the user list
+      disable-user-list=true
+    dest: /etc/dconf/db/gdm.d/00-login-screen
+
+- name: update the system databases
+  command: dconf update
+
+- name: update gnome-terminal theme
+  get_url:
+    url: "https://raw.githubusercontent.com/arcticicestudio/nord-gnome-terminal/develop/src/nord.sh"
+    dest: "{{ ansible_user_dir }}/Downloads/nord.sh"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"

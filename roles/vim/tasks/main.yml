@@ -1,0 +1,6 @@
+---
+
+- name: install vim packages when nonexisting
+  become: "{{ ansible_user_id }}"
+  command: "volt get {{ item }}"
+  loop: "{{ vim.packages }}"

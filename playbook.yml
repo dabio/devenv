@@ -1,0 +1,8 @@
+---
+
+- hosts: lifebook
+  become: yes
+  roles:
+  - packages
+  - gnome
+  - vim

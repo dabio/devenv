@@ -1,0 +1,35 @@
+---
+
+- name: install dnf
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+  - dnf
+  - python2-dnf
+
+- name: use dnf to install groups
+  dnf:
+    name: "@{{ item }}"
+    state: latest
+  loop: "{{ packages.groups }}"
+
+- name: use dnf to install common packages
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages.packages }}"
+
+- name: download raw packages
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    mode: 0755
+  loop: "{{ packages.raw }}"
+
+- name: copy files
+  copy:
+    src: tmux.conf
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
