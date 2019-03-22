@@ -1,0 +1,20 @@
+[user]
+    name = Danilo
+    email = dabio@users.noreply.github.com
+    signingkey = A4C2D9D3
+[color]
+    ui = true
+[status]
+#    short = 1
+    branch = 1
+[filter "media"]
+    clean = git-media-clean %f
+    smudge = git-media-smudge %f
+[filter "hawser"]
+    clean = git hawser clean %f
+    smudge = git hawser smudge %f
+    required = true
+[push]
+    default = simple
+#[commit]
+#    gpgsign = true

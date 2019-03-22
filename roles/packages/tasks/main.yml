@@ -1,21 +1,13 @@
 ---
 
-- name: install dnf
+- name: install groups
   yum:
-    name: "{{ item }}"
-    state: latest
-  loop:
-  - dnf
-  - python2-dnf
-
-- name: use dnf to install groups
-  dnf:
     name: "@{{ item }}"
     state: latest
   loop: "{{ packages.groups }}"
 
-- name: use dnf to install common packages
-  dnf:
+- name: install common packages
+  yum:
     name: "{{ item }}"
     state: latest
   loop: "{{ packages.packages }}"
@@ -27,9 +19,25 @@
     mode: 0755
   loop: "{{ packages.raw }}"
 
-- name: copy files
+- name: copy tmux files
+  become: "{{ ansible_user_id }}"
   copy:
     src: tmux.conf
     dest: "{{ ansible_user_dir }}/.tmux.conf"
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
+
+- name: copy fish files
+  become: "{{ ansible_user_id }}"
+  copy:
+    src: config.fish
+    dest: "{{ ansible_user_dir }}/.config/fish/config.fish"
+
+- name: change shell to fish
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/bin/fish
+
+- name: use .gitconfig
+  become: "{{ ansible_user_id }}"
+  copy:
+    src: gitconfig
+    dest: "{{ ansible_user_dir }}/.gitconfig"

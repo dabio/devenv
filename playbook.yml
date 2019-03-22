@@ -3,6 +3,8 @@
 - hosts: lifebook
   become: yes
   roles:
+  - {role: packages, tags: ["packages", "fish", "tmux", "git"]}
   - packages
   - gnome
-  - vim
+  - {role: vim, tags: ["vim"]}
+  - {role: golang, tags: ["golang"]}

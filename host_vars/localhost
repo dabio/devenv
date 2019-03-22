@@ -1,5 +1,8 @@
 ---
 
+golang:
+  version: 1.12.1
+
 packages:
   groups:
   - "Minimal Install"
@@ -10,11 +13,12 @@ packages:
   - "X Window System"
   - "General Purpose Desktop"
   packages:
+  - git
   - pass
   - fish
   - firefox
   - tmux
-  - yum-utils
+  - neovim
   raw:
   - url: "https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch"
     dest: /usr/local/bin/neofetch
@@ -25,12 +29,26 @@ packages:
 
 vim:
   packages:
-  - github.com/arcticicestudio/nord-vim
-  - github.com/cohama/lexima.vim
-  - github.com/ctrlpvim/ctrlp.vim
-  - github.com/itchyny/lightline.vim
-  - github.com/mhinz/vim-signify
-  - github.com/sbdchd/neoformat
-  - github.com/sheerun/vim-polyglot
-  - github.com/tpope/vim-vinegar
-  - github.com/w0rp/ale
+    - name: github.com/arcticicestudio/nord-vim
+      value: |
+        let g:nord_italic_comments = 1
+        let g:nord_uniform_status_lines = 1
+        let g:nord_uniform_diff_background = 1
+    - name: github.com/cohama/lexima.vim
+    - name: github.com/ctrlpvim/ctrlp.vim
+    - name: github.com/itchyny/lightline.vim
+      value: |
+        let g:lightline = {'colorscheme': 'nord'}
+    - name: github.com/mhinz/vim-signify
+      value: |
+        let g:signify_vcs_list = [ 'git', 'hg' ]
+        let g:signify_sign_show_count = 0
+        let g:signify_sign_change = '~'
+        let g:signify_sign_delete = '-'
+    - name: github.com/sbdchd/neoformat
+      value: |
+        let g:terraform_fmt_on_save = 1
+    - name: github.com/sheerun/vim-polyglot
+    - name: github.com/tpope/vim-vinegar
+    - name: github.com/w0rp/ale
+
