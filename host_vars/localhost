@@ -3,6 +3,10 @@
 golang:
   version: 1.12.1
 
+kubernetes:
+  helm:
+    version: 2.13.1
+
 packages:
   groups:
   - "Minimal Install"
