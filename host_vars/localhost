@@ -4,8 +4,11 @@ golang:
   version: 1.12.1
 
 kubernetes:
-  helm:
-    version: 2.13.1
+  helm: "https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-linux-amd64.tar.gz"
+  minikube: "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"
+  # docker-machine: "https://storage.googleapis.com/minikube/releases/latest/docker-machine-driver-kvm2"
+  dockerMachine: "https://storage.googleapis.com/minikube/releases/v0.30.0/docker-machine-driver-kvm2"
+  kubectl: "https://storage.googleapis.com/kubernetes-release/release/v1.13.4/bin/linux/amd64/kubectl"
 
 packages:
   groups:

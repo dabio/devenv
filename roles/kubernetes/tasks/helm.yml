@@ -1,0 +1,20 @@
+---
+
+- name: get helm
+  unarchive:
+    src: "{{ kubernetes.helm }}"
+    exclude:
+      - LICENSE
+      - README.md
+      - tiller
+    dest: "/tmp"
+    remote_src: yes
+  tags: ["helm"]
+
+- name: install helm
+  copy:
+    src: /tmp/linux-amd64/helm
+    dest: /usr/local/bin/
+    mode: 0755
+    remote_src: yes
+  tags: ["helm"]

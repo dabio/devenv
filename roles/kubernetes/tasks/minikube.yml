@@ -1,0 +1,44 @@
+---
+
+- name: install required kvm2 libraries
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - libvirt-daemon-kvm
+    - qemu-kvm
+  tags: ["minikube"]
+
+- name: make sure libvirtd service runs
+  systemd:
+    name: libvirtd
+    enabled: yes
+    state: started
+  tags: ["minikube"]
+
+- name: put myself into libvirt group
+  user:
+    append: yes
+    groups: ["libvirt"]
+    name: "{{ ansible_user_id }}"
+  tags: ["minikube"]
+
+- name: install docker machine driver
+  get_url:
+    url: "{{ kubernetes.dockerMachine }}"
+    dest: "/usr/local/bin"
+    mode: 0755
+  tags: ["minikube"]
+
+- name: install minikube
+  get_url:
+    url: "{{ kubernetes.minikube }}"
+    dest: "/usr/local/bin/minikube"
+    mode: 0755
+  tags: ["minikube"]
+
+- name: set vm driver to kvm2
+  become: "{{ ansible_user_id }}"
+  command: "minikube config set vm-driver kvm2"
+  tags: ["minikube"]
+
