@@ -1,0 +1,21 @@
+---
+
+- name: link to libwebkitgtk
+  file:
+    src: /usr/lib64/libwebkitgtk-3.0.so.0
+    path: /usr/lib64/libwebkitgtk-1.0.so.0
+    state: link
+  tags: ["citrix"]
+
+- name: download ICAClient
+  get_url:
+    url: "{{ citrix }}"
+    dest: /tmp/ICAClient.rpm
+  tags: ["citrix"]
+
+- name: install citrix
+  yum:
+    name: /tmp/ICAClient.rpm
+    state: present
+    skip_broken: yes
+  tags: ["citrix"]

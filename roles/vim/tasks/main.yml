@@ -2,28 +2,32 @@
 
 - name: install vim packages when nonexisting
   become: "{{ ansible_user_id }}"
-  command: "volt get {{ item.name }}"
+  command: "volt get {{ item.package | default(item) }}"
   loop: "{{ vim.packages }}"
+  tags: ["vim"]
 
 - name: apply package settings
   become: "{{ ansible_user_id }}"
   blockinfile:
-    path: "{{ ansible_user_dir }}/volt/plugconf/{{ item.name }}.vim"
+    path: "{{ ansible_user_dir }}/volt/plugconf/{{ item.package }}.vim"
     insertafter: 'function! s:on_load_pre'
     block: "{{ item.value | indent(width=2, indentfirst=True) }}"
-    marker: "\" {mark} ANSIBLE MANAGED BLOCK"
+    marker: "  \" {mark} ANSIBLE MANAGED BLOCK"
   loop: "{{ vim.packages }}"
   when: item.value | default(false)
+  tags: ["vim"]
 
 - name: update volt changes
   become: "{{ ansible_user_id }}"
   command: "volt get -u -l"
+  tags: ["vim"]
 
 - name: make sure neovim config folder exists
   become: "{{ ansible_user_id }}"
   file:
     path: "{{ ansible_user_dir }}/.config/nvim"
     state: directory
+  tags: ["vim"]
 
 - name: copy neovim config files
   become: "{{ ansible_user_id }}"
@@ -33,9 +37,11 @@
       set runtimepath^=~/.vim runtimepath+=~/.vim/after
       let &packpath = &runtimepath
       source ~/.vimrc
+  tags: ["vim"]
 
 - name: add vimrc config file
   become: "{{ ansible_user_id }}"
   copy:
     src: vimrc
     dest: "{{ ansible_user_dir }}/.vimrc"
+  tags: ["vim"]

@@ -3,9 +3,10 @@
 - hosts: lifebook
   become: yes
   roles:
-  - {role: packages, tags: ["packages", "fish", "tmux", "git"]}
   - {role: kubernetes, tags: ["kubernetes"]}
   - packages
   - gnome
   - {role: vim, tags: ["vim"]}
   - {role: golang, tags: ["golang"]}
+  - citrix
+  - python

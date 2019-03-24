@@ -1,16 +1,30 @@
 ---
 
+- name: disable subscription manager
+  command: "subscription-manager config --rhsm.manage_repos=0"
+  tags: ["packages"]
+
+- name: enable repositories
+  yum_repository: "{{ item }}"
+  #    name: "{{ item.name }}"
+  #    baseurl: "{{ item.baseurl | default('') }}"
+  #    metalink: "{{ item.metalink | default('') }}"
+  #    description: "{{ item.description }}"
+  loop: "{{ packages.repositories }}"
+  tags: ["packages"]
+
 - name: install groups
   yum:
     name: "@{{ item }}"
     state: latest
   loop: "{{ packages.groups }}"
+  tags: ["packages"]
 
 - name: install common packages
   yum:
-    name: "{{ item }}"
+    name: "{{ packages.packages }}"
     state: latest
-  loop: "{{ packages.packages }}"
+  tags: ["packages"]
 
 - name: download raw packages
   get_url:
@@ -18,26 +32,31 @@
     dest: "{{ item.dest }}"
     mode: 0755
   loop: "{{ packages.raw }}"
+  tags: ["packages"]
 
 - name: copy tmux files
   become: "{{ ansible_user_id }}"
   copy:
     src: tmux.conf
     dest: "{{ ansible_user_dir }}/.tmux.conf"
+  tags: ["packages"]
 
 - name: copy fish files
   become: "{{ ansible_user_id }}"
   copy:
     src: config.fish
     dest: "{{ ansible_user_dir }}/.config/fish/config.fish"
+  tags: ["packages"]
 
 - name: change shell to fish
   user:
     name: "{{ ansible_user_id }}"
     shell: /usr/bin/fish
+  tags: ["packages"]
 
 - name: use .gitconfig
   become: "{{ ansible_user_id }}"
   copy:
     src: gitconfig
     dest: "{{ ansible_user_dir }}/.gitconfig"
+  tags: ["packages"]

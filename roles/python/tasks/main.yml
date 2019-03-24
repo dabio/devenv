@@ -1,0 +1,31 @@
+---
+
+- name: install python36
+  yum:
+    name: rh-python36-python
+    state: latest
+  tags: ["python"]
+
+- name: fetch poetry
+  get_url:
+    url: https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py
+    dest: /tmp/get-poetry.py
+  tags: ["python"]
+
+- name: install poetry
+  become: "{{ ansible_user_id }}"
+  command: python /tmp/get-poetry.py
+  tags: ["python"]
+
+- name: make sure fish completions are existing
+  become: "{{ ansible_user_id }}"
+  file:
+    path: "{{ ansible_user_dir }}/.config/fish/completions"
+    state: directory
+  tags: ["python"]
+
+- name: enable tab completions
+  become: "{{ ansible_user_id }}"
+  shell: "{{ ansible_user_dir }}/.poetry/bin/poetry completions fish > {{ ansible_user_dir }}/.config/fish/completions/poetry.fish"
+  tags: ["python"]
+
