@@ -6,18 +6,7 @@
 
 - name: enable repositories
   yum_repository: "{{ item }}"
-  #    name: "{{ item.name }}"
-  #    baseurl: "{{ item.baseurl | default('') }}"
-  #    metalink: "{{ item.metalink | default('') }}"
-  #    description: "{{ item.description }}"
   loop: "{{ packages.repositories }}"
-  tags: ["packages"]
-
-- name: install groups
-  yum:
-    name: "@{{ item }}"
-    state: latest
-  loop: "{{ packages.groups }}"
   tags: ["packages"]
 
 - name: install common packages
@@ -59,4 +48,18 @@
   copy:
     src: gitconfig
     dest: "{{ ansible_user_dir }}/.gitconfig"
+  tags: ["packages"]
+
+- name: make sure .ssh/ directory exists
+  become: "{{ ansible_user_id }}"
+  file:
+    path: "{{ ansible_user_dir }}/.ssh"
+    state: directory
+  tags: ["packages"]
+
+- name: use ssh config
+  become: "{{ ansible_user_id }}"
+  copy:
+    src: ssh.config
+    dest: "{{ ansible_user_dir }}/.ssh/config"
   tags: ["packages"]
