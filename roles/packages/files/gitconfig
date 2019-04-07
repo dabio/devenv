@@ -16,5 +16,7 @@
     required = true
 [push]
     default = simple
-#[commit]
-#    gpgsign = true
+[commit]
+    gpgsign = true
+[credential]
+    helper = osxkeychain

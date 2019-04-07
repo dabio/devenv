@@ -1,65 +1,41 @@
----
-
-- name: disable subscription manager
-  command: "subscription-manager config --rhsm.manage_repos=0"
-  tags: ["packages"]
-
-- name: enable repositories
-  yum_repository: "{{ item }}"
-  loop: "{{ packages.repositories }}"
-  tags: ["packages"]
-
-- name: install common packages
-  yum:
-    name: "{{ packages.packages }}"
+- name: install brew packages
+  homebrew:
+    name: "{{ packages.brew }}"
     state: latest
-  tags: ["packages"]
+    update_homebrew: yes
 
-- name: download raw packages
-  get_url:
-    url: "{{ item.url }}"
-    dest: "{{ item.dest }}"
-    mode: 0755
-  loop: "{{ packages.raw }}"
-  tags: ["packages"]
+  #- name: download raw packages
+  #  get_url:
+  #    url: "{{ item.url }}"
+  #    dest: "{{ item.dest }}"
+  #    mode: 0755
+  #  loop: "{{ packages.raw }}"
 
-- name: copy tmux files
-  become: "{{ ansible_user_id }}"
-  copy:
-    src: tmux.conf
-    dest: "{{ ansible_user_dir }}/.tmux.conf"
-  tags: ["packages"]
+- name: make sure directories exists
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ ansible_user_dir }}/.ssh"
+    - "{{ ansible_user_dir }}/.config"
+    - "{{ ansible_user_dir }}/.config/fish"
 
 - name: copy fish files
-  become: "{{ ansible_user_id }}"
   copy:
     src: config.fish
     dest: "{{ ansible_user_dir }}/.config/fish/config.fish"
-  tags: ["packages"]
 
 - name: change shell to fish
   user:
     name: "{{ ansible_user_id }}"
-    shell: /usr/bin/fish
-  tags: ["packages"]
+    shell: /usr/local/bin/fish
 
 - name: use .gitconfig
-  become: "{{ ansible_user_id }}"
   copy:
     src: gitconfig
     dest: "{{ ansible_user_dir }}/.gitconfig"
-  tags: ["packages"]
-
-- name: make sure .ssh/ directory exists
-  become: "{{ ansible_user_id }}"
-  file:
-    path: "{{ ansible_user_dir }}/.ssh"
-    state: directory
-  tags: ["packages"]
 
 - name: use ssh config
-  become: "{{ ansible_user_id }}"
   copy:
     src: ssh.config
     dest: "{{ ansible_user_dir }}/.ssh/config"
-  tags: ["packages"]

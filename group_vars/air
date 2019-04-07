@@ -1,0 +1,32 @@
+packages:
+  brew:
+    - go
+    - volt
+    - vim
+
+vim:
+  volt: "{{ ansible_user_dir }}/.vim/volt"
+  packages:
+    - package: github.com/arcticicestudio/nord-vim
+      value: |
+        let g:nord_italic_comments = 1
+        let g:nord_uniform_status_lines = 1
+        let g:nord_uniform_diff_background = 1
+    - package: github.com/itchyny/lightline.vim
+      value: |
+        let g:lightline = {'colorscheme': 'nord'}
+    - package: github.com/mhinz/vim-signify
+      value: |
+        let g:signify_vcs_list = [ 'git', 'hg' ]
+        let g:signify_sign_show_count = 0
+        let g:signify_sign_change = '~'
+        let g:signify_sign_delete = '-'
+    - package: github.com/sbdchd/neoformat
+      value: |
+        let g:terraform_fmt_on_save = 1
+    - github.com/cohama/lexima.vim
+    - github.com/ctrlpvim/ctrlp.vim
+    - github.com/sheerun/vim-polyglot
+    - github.com/tpope/vim-vinegar
+    - github.com/w0rp/ale
+    - github.com/jvirtanen/vim-hcl

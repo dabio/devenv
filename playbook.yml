@@ -1,12 +1,3 @@
----
-
-- hosts: lifebook
-  become: yes
+- hosts: air
   roles:
-  - {role: kubernetes, tags: ["kubernetes"]}
-  - packages
-  - gnome
-  - {role: vim, tags: ["vim"]}
-  - {role: golang, tags: ["golang"]}
-  - citrix
-  - python
+    - vim

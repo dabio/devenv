@@ -1,0 +1,31 @@
+- name: get installed packages
+  command: volt list
+  register: _installed_packages
+  environment:
+    VOLTPATH: "{{ vim.volt}}"
+
+- name: install vim packages when nonexisting
+  command: "volt get {{ item.package | default(item) }}"
+  when: _installed_packages.stdout.find(item.package | default(item)) == -1
+  loop: "{{ vim.packages }}"
+  environment:
+    VOLTPATH: "{{ vim.volt}}"
+
+- name: apply package settings
+  blockinfile:
+    path: "{{ vim.volt }}/plugconf/{{ item.package }}.vim"
+    insertafter: 'function! s:on_load_pre'
+    block: "{{ item.value | indent(width=2, indentfirst=True) }}"
+    marker: "  \" {mark} ANSIBLE MANAGED BLOCK"
+  loop: "{{ vim.packages }}"
+  when: item.value | default(false)
+
+- name: update volt changes
+  command: "volt get -u -l"
+  environment:
+    VOLTPATH: "{{ vim.volt }}"
+
+- name: add vimrc config file
+  copy:
+    src: vimrc
+    dest: "{{ ansible_user_dir }}/.vimrc"

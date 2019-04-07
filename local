@@ -1,2 +1,2 @@
-[lifebook]
-localhost ansible_connection=local
+[air]
+c953b3d4 ansible_connection=local

@@ -1,7 +1,0 @@
----
-
-- name: unpack golang
-  unarchive:
-    src: "https://dl.google.com/go/go{{ golang.version }}.linux-amd64.tar.gz"
-    dest: "/usr/local"
-    remote_src: yes
