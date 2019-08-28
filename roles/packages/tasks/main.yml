@@ -4,12 +4,12 @@
     state: latest
     update_homebrew: yes
 
-  #- name: download raw packages
-  #  get_url:
-  #    url: "{{ item.url }}"
-  #    dest: "{{ item.dest }}"
-  #    mode: 0755
-  #  loop: "{{ packages.raw }}"
+    #- name: download raw packages
+    #  get_url:
+    #    url: "{{ item.url }}"
+    #    dest: "{{ item.dest }}"
+    #    mode: 0755
+    #  loop: "{{ packages.raw }}"
 
 - name: make sure directories exists
   file:

@@ -3,6 +3,9 @@ packages:
     - go
     - volt
     - vim
+    #  raw:
+    #    - url: https://github.com/weaveworks/footloose/releases/download/0.4.0/footloose-0.4.0-darwin-x86_64.tar.gz
+    #      dest: /usr/local/bin/footloose
 
 vim:
   volt: "{{ ansible_user_dir }}/.vim/volt"
@@ -24,6 +27,11 @@ vim:
     - package: github.com/sbdchd/neoformat
       value: |
         let g:terraform_fmt_on_save = 1
+    - package: github.com/maralla/completor.vim
+      value: |
+        let g:completor_filetype_map = {
+        \ 'go': {'ft': 'lsp', 'cmd': 'gopls'},
+        \ }
     - github.com/cohama/lexima.vim
     - github.com/ctrlpvim/ctrlp.vim
     - github.com/sheerun/vim-polyglot

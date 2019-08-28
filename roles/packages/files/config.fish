@@ -7,6 +7,10 @@ if status --is-login
         set -x PATH $PATH $HOME/.poetry/bin
     end
 
+    if test -d $HOME/go/bin
+        set -x PATH $PATH $HOME/go/bin
+    end
+
     direnv hook fish | source
 end
 
